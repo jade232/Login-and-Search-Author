@@ -5,38 +5,34 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { Link } from "react-router-dom"
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({ inputs, handleChange, errors, handleBlur, setErrors }) {
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if (inputs.userName === "") {
+      setErrors({ ...errors, userName: true })
+    } else if (inputs.password === "") {
+      setErrors({ ...errors, password: true })
+    }
   };
+
+  const activateLink = (e) => {
+    if (inputs.userName === "") {
+      e.preventDefault();
+    } else if (inputs.password === "") {
+      e.preventDefault();
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -61,11 +57,15 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
+              id="username"
+              label="Email UserName"
+              name="username"
+              // autoComplete="email"
+              value={inputs.userName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.userName}
+              helperText={errors && "Please enter Valid name"}
             />
             <TextField
               margin="normal"
@@ -75,21 +75,27 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              // autoComplete="current-password"
+              value={inputs.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={errors.password}
+              helperText={errors && "Please enter password"}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
+            <Link to="/home" onClick={(e) => activateLink(e)} >
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                disabled={(errors.userName === true || errors.password === true) &&
+                  (inputs.userName === "" || inputs.password === "")
+                }
+              >
+                Sign In
+              </Button>
+            </Link>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -100,10 +106,9 @@ export default function SignIn() {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
