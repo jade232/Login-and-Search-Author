@@ -7,10 +7,6 @@ import BookData from "../Home/Data.json";
 
 function Home({ inputs }) {
 
-    React.useEffect(() => {
-        console.log(inputs)
-    }, [inputs])
-
     return (
         <>
             <Container>

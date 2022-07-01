@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import SignIn from './Components/Login/Login';
-import axios from "axios"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from './Components/Search/Home';
 
@@ -19,7 +18,7 @@ function App() {
 
 
   const handleChange = (e) => {
-    let { name, value } = e.target;
+    let { name } = e.target;
     if (name === "username") {
       setInputs({ ...inputs, userName: e.target.value })
     } else if (name === "password") {
@@ -28,7 +27,7 @@ function App() {
   }
 
   const handleBlur = (e) => {
-    let { name, value } = e.target;
+    let { name } = e.target;
     if (name === "username") {
       if (inputs.userName === "") {
         setErrors({ ...errors, userName: true })

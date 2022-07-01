@@ -11,10 +11,6 @@ import { Link } from 'react-router-dom'
 
 function Design({ inputs }) {
 
-    React.useEffect(() => {
-        console.log(inputs)
-    }, [])
-
     return (
         <Container>
             <Box sx={{ flexGrow: 2 }} align="center">
