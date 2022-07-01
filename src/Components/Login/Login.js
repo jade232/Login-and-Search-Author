@@ -8,28 +8,30 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const theme = createTheme();
 
 export default function SignIn({ inputs, handleChange, errors, handleBlur, setErrors }) {
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (inputs.userName === "") {
-      setErrors({ ...errors, userName: true })
-    } else if (inputs.password === "") {
-      setErrors({ ...errors, password: true })
-    }
-  };
+  let history = useNavigate();
 
-  const activateLink = (e) => {
-    if (inputs.userName === "") {
-      e.preventDefault();
-    } else if (inputs.password === "") {
-      e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let { name } = e.target;
+    if (name === "username") {
+      if (inputs.userName === "") {
+        setErrors({ ...errors, userName: true })
+      }
+    } else if (name === "password") {
+      if (inputs.password === "") {
+        setErrors({ ...errors, password: true })
+      }
+    } else {
+      history("/home")
     }
-  }
+
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -49,7 +51,7 @@ export default function SignIn({ inputs, handleChange, errors, handleBlur, setEr
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -62,7 +64,7 @@ export default function SignIn({ inputs, handleChange, errors, handleBlur, setEr
               onChange={handleChange}
               onBlur={handleBlur}
               error={errors.userName}
-              helperText={errors && "Please enter Valid name"}
+              inputProps={{ maxLength: 12 }}
             />
             <TextField
               margin="normal"
@@ -77,33 +79,21 @@ export default function SignIn({ inputs, handleChange, errors, handleBlur, setEr
               onChange={handleChange}
               onBlur={handleBlur}
               error={errors.password}
-              helperText={errors && "Please enter password"}
+              // helperText={inputs.userName === "" ? "Please Enter UserName" : null}
+              inputProps={{ maxLength: 12 }}
             />
-            <Link to="/home" onClick={(e) => activateLink(e)} >
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={(errors.userName === true || errors.password === true) &&
-                  (inputs.userName === "" || inputs.password === "")
-                }
-              >
-                Sign In
-              </Button>
-            </Link>
-            {/* <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid> */}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              // onSubmit={handleSubmit}
+              sx={{ mt: 3, mb: 2 }}
+              disabled={(errors.userName === true || errors.password === true) &&
+                (inputs.userName === "" || inputs.password === "")
+              }
+            >
+              Sign In
+            </Button>
           </Box>
         </Box>
       </Container>
