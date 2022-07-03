@@ -35,7 +35,7 @@ export default function SignIn({ inputs, handleChange, errors, handleBlur, setEr
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      {/* <Container component="main" maxWidth="xs"> */}
         <CssBaseline />
         <Box
           sx={{
@@ -96,7 +96,7 @@ export default function SignIn({ inputs, handleChange, errors, handleBlur, setEr
             </Button>
           </Box>
         </Box>
-      </Container>
+      {/* </Container> */}
     </ThemeProvider>
   );
 }
